@@ -3,7 +3,12 @@
 import Link from "next/link";
 import { Search, ShoppingCart, Heart, User, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { navLinks } from "./navcontents";
 import { useState, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
@@ -127,7 +132,7 @@ export function Navigation() {
               <User className="h-4 w-4" />
               <span>Login / Register</span>
             </div>
-            <div ref={searchRef} className="flex items-center gap-2">
+            <div ref={searchRef} className="items-center gap-2 hidden md:flex">
               {showSearch && (
                 <Input
                   type="text"
@@ -163,7 +168,6 @@ export function Navigation() {
               <span>{wishlistCount}</span>
             </Link>
 
-            {/* Mobile Menu Trigger */}
             <Sheet>
               <SheetTrigger asChild>
                 <Button
@@ -175,7 +179,8 @@ export function Navigation() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right">
-                <nav className="flex flex-col gap-4 mt-8 text-lg font-medium text-muted-foreground">
+                <SheetTitle className="sr-only">Menu</SheetTitle>
+                <nav className="flex flex-col gap-4 mt-8 ml-8 text-lg font-medium text-muted-foreground">
                   <Link href="/" className="hover:text-foreground">
                     Home
                   </Link>
@@ -197,6 +202,28 @@ export function Navigation() {
                   <Link href="/contact" className="hover:text-foreground">
                     Contact
                   </Link>
+                  <div ref={searchRef} className="flex items-center gap-2">
+                    {showSearch && (
+                      <Input
+                        type="text"
+                        placeholder="Search books..."
+                        className="w-48"
+                        autoFocus
+                        value={keyword}
+                        onChange={(e) => setKeyword(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                      />
+                    )}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-primary hover:text-blue-600 hover:bg-blue-50"
+                      onClick={handleSearch}
+                    >
+                      <Search className="h-5 w-5 ml-8" />
+                      {!showSearch && <span className="text-lg">Search</span>}
+                    </Button>
+                  </div>
                   <div className="flex items-center gap-2 mt-4 text-primary">
                     <User className="h-5 w-5" />
                     <span>Login / Register</span>
