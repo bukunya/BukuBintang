@@ -47,9 +47,11 @@ export function ProductCard({
             {category}
           </p>
           <div className="flex items-center gap-2 font-bold">
-            <span className="text-muted-foreground/60 line-through">
-              {price}
-            </span>
+            {price !== "" && (
+              <span className="text-muted-foreground/60 line-through">
+                {price}
+              </span>
+            )}
             <span className="text-secondary">{salePrice}</span>
           </div>
         </div>
