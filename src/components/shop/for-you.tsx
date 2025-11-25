@@ -92,18 +92,26 @@ const ForYou = ({ tags, id }: ForYouProps) => {
             </Link>
           )}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12">
+
+        <div className="flex overflow-x-auto pb-6 gap-4 snap-x snap-mandatory -mx-4 px-4 md:grid md:grid-cols-4 md:gap-x-8 md:gap-y-12 md:mx-0 md:px-0 md:pb-0 md:overflow-visible no-scrollbar">
           {loading ? (
-            Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="space-y-3">
-                <Skeleton className="h-[200px] w-full rounded-lg" />
+            Array.from({ length: 4 }).map((_, i) => (
+              <div
+                key={i}
+                className="space-y-3 min-w-[250px] md:min-w-0 snap-center"
+              >
+                <Skeleton className="h-[300px] w-full rounded-lg" />
                 <Skeleton className="h-4 w-3/4" />
                 <Skeleton className="h-4 w-1/2" />
               </div>
             ))
           ) : books.length > 0 ? (
             books.map((book) => (
-              <Link href={`/shop/${book._id}`} key={book._id}>
+              <Link
+                href={`/shop/${book._id}`}
+                key={book._id}
+                className="min-w-[250px] md:min-w-0 snap-center"
+              >
                 <ProductCard
                   id={book._id}
                   title={book.title}
@@ -122,6 +130,16 @@ const ForYou = ({ tags, id }: ForYouProps) => {
           )}
         </div>
       </div>
+
+      <style jsx global>{`
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </section>
   );
 };

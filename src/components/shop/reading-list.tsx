@@ -27,7 +27,11 @@ const ReadingList = ({ currentId }: ReadingListProps) => {
       const viewed = JSON.parse(localStorage.getItem("viewedBooks") || "[]");
       let currentBooks = viewed.slice(0, 4);
 
-      while (currentBooks.length < 4) {
+      let attempts = 0;
+      const maxAttempts = 10;
+
+      while (currentBooks.length < 4 && attempts < maxAttempts) {
+        attempts++;
         try {
           const response = await fetch(
             "https://bukuacak-9bdcb4ef2605.herokuapp.com/api/v1/random_book",
@@ -74,10 +78,14 @@ const ReadingList = ({ currentId }: ReadingListProps) => {
             </Link>
           )}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12">
+
+        <div className="flex overflow-x-auto pb-6 gap-4 snap-x snap-mandatory -mx-4 px-4 md:grid md:grid-cols-4 md:gap-x-8 md:gap-y-12 md:mx-0 md:px-0 md:pb-0 md:overflow-visible no-scrollbar">
           {loading ? (
             Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="space-y-3">
+              <div
+                key={i}
+                className="space-y-3 min-w-[250px] md:min-w-0 snap-center"
+              >
                 <Skeleton className="h-[200px] w-full rounded-lg" />
                 <Skeleton className="h-4 w-3/4" />
                 <Skeleton className="h-4 w-1/2" />
@@ -85,7 +93,11 @@ const ReadingList = ({ currentId }: ReadingListProps) => {
             ))
           ) : books.length > 0 ? (
             books.map((book) => (
-              <Link href={`/shop/${book._id}`} key={book._id}>
+              <Link
+                href={`/shop/${book._id}`}
+                key={book._id}
+                className="min-w-[250px] md:min-w-0 snap-center"
+              >
                 <ProductCard
                   id={book._id}
                   title={book.title}
@@ -98,12 +110,22 @@ const ReadingList = ({ currentId }: ReadingListProps) => {
               </Link>
             ))
           ) : (
-            <p className="col-span-full text-center text-muted-foreground">
+            <p className="col-span-full text-center text-muted-foreground w-full">
               No books available.
             </p>
           )}
         </div>
       </div>
+
+      <style jsx global>{`
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </section>
   );
 };
