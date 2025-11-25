@@ -178,17 +178,14 @@ export function Navigation() {
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right">
+              <SheetContent side="top">
                 <SheetTitle className="sr-only">Menu</SheetTitle>
-                <nav className="flex flex-col gap-4 mt-8 ml-8 text-lg font-medium text-muted-foreground">
+                <nav className="flex flex-col gap-4 mb-8 text-lg font-medium text-muted-foreground text-center">
                   <Link href="/" className="hover:text-foreground">
                     Home
                   </Link>
                   <Link href="/shop" className="hover:text-foreground">
                     Shop
-                  </Link>
-                  <Link href="/cart" className="hover:text-foreground">
-                    Cart ({cartCount})
                   </Link>
                   <Link href="/wishlist" className="hover:text-foreground">
                     Wishlist ({wishlistCount})
@@ -202,7 +199,14 @@ export function Navigation() {
                   <Link href="/contact" className="hover:text-foreground">
                     Contact
                   </Link>
-                  <div ref={searchRef} className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 mt-4 text-primary justify-center">
+                    <User className="h-5 w-5" />
+                    <span>Login / Register</span>
+                  </div>
+                  <div
+                    ref={searchRef}
+                    className="flex items-center gap-2 justify-center"
+                  >
                     {showSearch && (
                       <Input
                         type="text"
@@ -220,14 +224,23 @@ export function Navigation() {
                       className="text-primary hover:text-blue-600 hover:bg-blue-50"
                       onClick={handleSearch}
                     >
-                      <Search className="h-5 w-5 ml-8" />
-                      {!showSearch && <span className="text-lg">Search</span>}
+                      <Search className="size-6 " />
                     </Button>
                   </div>
-                  <div className="flex items-center gap-2 mt-4 text-primary">
-                    <User className="h-5 w-5" />
-                    <span>Login / Register</span>
-                  </div>
+                  <Link
+                    href="/cart"
+                    className="flex items-center gap-1 cursor-pointer hover:text-blue-600 text-primary justify-center"
+                  >
+                    <ShoppingCart className="h-5 w-5" />
+                    <span>{cartCount}</span>
+                  </Link>
+                  <Link
+                    href="/wishlist"
+                    className="flex items-center gap-1 cursor-pointer hover:text-blue-600 text-primary justify-center"
+                  >
+                    <Heart className="h-5 w-5" />
+                    <span>{wishlistCount}</span>
+                  </Link>
                 </nav>
               </SheetContent>
             </Sheet>

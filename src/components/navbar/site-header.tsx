@@ -11,7 +11,7 @@ import { topInfo } from "./navcontents";
 
 export function SiteHeader() {
   return (
-    <header className="w-full font-sans">
+    <header className="w-full font-sans hidden md:block">
       <div className="bg-secondary text-white py-3 px-4 md:px-8 text-sm font-bold">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-2">
           <div className="flex items-center gap-4">
