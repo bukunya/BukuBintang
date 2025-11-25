@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dokumentasi Bookstar
 
-## Getting Started
+## Tech Stack, Tools, and Deployment Front End
 
-First, run the development server:
+1. Next.js
+2. TypeScript
+3. Node
+4. ShadCN/UI
+5. Git
+6. GitHub
+7. Vercel
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Fitur-fitur dan Halaman
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Halaman utama `bookstar.afif.dev`
+2. Halaman shop `bookstar.afif.dev/shop`
+3. Halaman produk `bookstar.afif.dev/shop/:id`
+4. Halaman wishlist `bookstar.afif.dev/wishlist`
+5. Halaman cart `bookstar.afif.dev/cart`
+6. Halaman lain `about, blog, contact`
+7. Top Loader
+8. Search functionality
+9. Rekomendasi buku berdasarkan buku yang dilihat saat ini
+10. Daftar buku yang pernah dilihat
+11. LocalStorage untuk menyimpan data secara lokal
+12. Responsive design
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Cara kerja rekomendasi
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`app/shop/for-you.tsx`
 
-## Learn More
+1. Pengguna memilih buku yang ingin dilihat
+2. Sistem mengambil data "tags" yang ada di API
+3. Menggunakan API untuk meng-query dengan memasukkan tags paling atas ke API bagian genre
+4. Jika ada (>1), tampilkan semua yang ada dengan memfilter mengecualikan buku yang sedang dibuka
+5. Jika buku dengan genre/tags yang sama kurang dari 8 buku atau tidak ada, maka gunakan API random_books untuk memunculkan sisa buku yang kurang sehingga target yang di fetch adalah 8 buku
+6. Gunakan pembatas sebanyak 16 kali percobaan memanggil API random_books supaya tidak memunculkan potensi infinite loop
 
-To learn more about Next.js, take a look at the following resources:
+## Cara kerja pagination
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`app/shop/page.tsx`, `app/search/page.tsx`, `app/cart/page.tsx`, `app/wishlist/page.tsx`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Sistem menggunakan state untuk menyimpan halaman saat ini (page) dan total halaman (totalPages)
+2. Pada saat fetch data, tambahkan parameter "page" ke query string API untuk mengambil data sesuai halaman
+3. API mengembalikan data buku untuk halaman tersebut beserta informasi pagination seperti totalPages
+4. Fungsi handlePageChange atau setCurrentPage mengubah nilai halaman dan memicu useEffect untuk fetch data ulang
+5. Komponen pagination menampilkan nomor halaman dengan ellipsis untuk navigasi yang efisien, menunjukkan halaman aktif dan tombol previous/next
+6. Untuk cart dan wishlist, pagination dilakukan secara lokal dengan membagi array dari localStorage menjadi chunk berdasarkan itemsPerPage (8 item per halaman)
 
-## Deploy on Vercel
+## Cara kerja wishlist dan cart
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`app/wishlist/page.tsx`, `app/cart/page.tsx`, `components/shop/hero.tsx`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Data wishlist dan cart disimpan di localStorage sebagai array objek buku dengan properti lengkap (id, title, coverImage, dll)
+2. Pada load halaman, sistem mengambil data dari localStorage dan menyimpannya ke state
+3. Fungsi addToWishlist/addToCart menambahkan buku ke array jika belum ada, atau menghapus jika sudah ada (toggle behavior)
+4. Fungsi removeFromWishlist/removeFromCart menghapus buku berdasarkan id dari array
+5. Custom event "cartWishlistUpdate" dipicu setelah perubahan untuk update real-time di halaman lain
+6. Tombol toggle di halaman produk (hero.tsx) menggunakan fungsi ini untuk menambah/hapus dari wishlist/cart dengan feedback visual (icon berubah)
+7. Pagination dilakukan secara lokal dengan itemsPerPage=8, menghitung totalPages berdasarkan panjang array

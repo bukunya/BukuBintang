@@ -45,7 +45,11 @@ export default function HistoryPage() {
               Recently Viewed Books
             </h1>
             {books.length > 0 && (
-              <Button variant="destructive" onClick={clearHistory}>
+              <Button
+                variant="destructive"
+                onClick={clearHistory}
+                className="rounded-xl cursor-pointer"
+              >
                 Clear History
               </Button>
             )}
@@ -53,7 +57,7 @@ export default function HistoryPage() {
           {books.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12">
               {books.map((book) => (
-                <div key={book._id} className="relative">
+                <div key={book._id} className="relative border">
                   <Link href={`/shop/${book._id}`}>
                     <ProductCard
                       id={book._id}
@@ -68,10 +72,10 @@ export default function HistoryPage() {
                   <Button
                     variant="destructive"
                     size="sm"
-                    className="absolute top-2 right-2"
+                    className="absolute -top-4 -right-4 rounded-full cursor-pointer"
                     onClick={() => removeBook(book._id)}
                   >
-                    <X className="h-4 w-4" />
+                    X
                   </Button>
                 </div>
               ))}

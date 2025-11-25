@@ -118,7 +118,7 @@ export default function WishlistPage() {
                     <Button
                       variant="destructive"
                       size="sm"
-                      className="absolute -top-4 -right-4 rounded-full"
+                      className="absolute -top-4 -right-4 rounded-full cursor-pointer"
                       onClick={() => removeFromWishlist(book.id)}
                     >
                       X

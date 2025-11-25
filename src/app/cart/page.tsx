@@ -113,7 +113,7 @@ export default function CartPage() {
                     <Button
                       variant="destructive"
                       size="sm"
-                      className="absolute -top-4 -right-4 rounded-full"
+                      className="absolute -top-4 -right-4 rounded-full cursor-pointer"
                       onClick={() => removeFromCart(book.id)}
                     >
                       X
